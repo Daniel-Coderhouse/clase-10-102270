@@ -1,0 +1,7 @@
+1 Incluir estados de error y loading | LISTO!
+2 Refactorizar llamada HTTP GET utilizando sintaxis async/await | LISTO!
+3 Incluir UI de Spinner / Loader | LISTO!
+4 Abstraer logica de llamada HTTP a un Custom Hook / Loader | LISTO!
+5 Crear vista por categorias | LISTO!
+6 Crear buscador LISTO!
+

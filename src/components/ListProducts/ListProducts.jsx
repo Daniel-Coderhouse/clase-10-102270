@@ -1,31 +1,37 @@
-import { useState, useEffect } from "react";
 import CardProduct from "../CardProduct/CardProduct";
 import styles from "./styles.module.css";
+import Spinner from "../Spinner/Spinner";
+import MessageUI from "../MessageUI/MessageUI";
 import { Link } from "react-router";
 
-/*
-TODO: 
-1) Incluir estados de error y loading
-2) Refactorizar llamada HTTP GET utilizando sintaxis async/await 
-3) Incluir UI de Spinner / Loader
-4) Abstraer logica de llamada HTTP a un Custom Hook
-*/
+import useFetch from "../../hooks/useFetch";
 
-const ListProducts = () => {
-  const [products, setProducts] = useState([]);
+const ListProducts = ({ searchValue }) => {
+  const url = "https://dummyjson.com/products";
+  const { data, error, loading } = useFetch(url);
 
-  useEffect(() => {
-    fetch("https://dummyjson.com/products")
-      .then((res) => res.json())
-      .then((data) => setProducts(data.products));
-  }, []);
+  if (error) {
+    return <MessageUI text={error} severity="error" />;
+  }
+
+  const filteredData = data?.products?.filter((product) =>
+    product.title.toLowerCase().includes(searchValue.toLowerCase()),
+  );
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <div className={styles.container}>
       <h3>Lista de Products</h3>
 
       <div className={styles.grid}>
-        {products.map((product) => (
+        {filteredData.map((product) => (
           <Link
             key={product.id}
             to={`/product/${product.id}`}
